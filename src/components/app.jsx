@@ -1,19 +1,29 @@
 import React, {Component} from 'react'
-import AppBar from './appbar/appbar'
-import PDFViewer from './pdfviewer/pdfviewer';
+import AppBar from './appbar/Appbar'
+import PDFViewer from './pdfviewer/PDFViewer';
 import classNames from "classnames";
 import withStyles from "@material-ui/core/styles/withStyles";
 import image from "assets/img/bg.jpg";
 import appStyle from 'assets/jss/appStyle'
 import Grid from '@material-ui/core/Grid';
-import Question from 'components/question/question'
+import Question from 'components/question/Question'
+import ToolKit from 'components/toolkit/Toolkit'
 class App extends Component {
     state = {
         numPages: null,
         pageNumber: 2,
+        isShowQuestion: false,
+        questionPoint: null
     }
     onDocumentLoadSuccess = ({ numPages }) => {
         this.setState({ numPages });
+    }
+
+    onUpdateQuestion = (newPoint) => {
+        this.setState({
+            isShowQuestion: !this.state.isShowQuestion,
+            questionPoint: newPoint
+        })
     }
     render() {
         const { classes, ...rest } = this.props;
@@ -25,14 +35,17 @@ class App extends Component {
                     <div className={classes.root}>
                         <Grid container spacing={24}>
                             <Grid item xs={1}>
-                                aaa
+                                <ToolKit/>
                             </Grid>
                             <Grid item xs={11}>
                                 <div className={classNames(classes.main, classes.mainRaised)}>
                                     <div className={classes.container}>
-                                        <PDFViewer/>
+                                        <PDFViewer onUpdateQuestion = {question => this.onUpdateQuestion(question)}/>
                                     </div>
-                                    <Question/>
+                                    {
+                                        this.state.isShowQuestion ? <Question point={this.state.questionPoint}/> : ""
+                                    }
+                                    
                                 </div>
                                 
                             </Grid>

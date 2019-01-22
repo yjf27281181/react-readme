@@ -4,7 +4,7 @@ const questionStyle = theme =>({
         maxWidth: 400,
         position: 'absolute',
         right: 40,
-        top: 700,
+        //top: 200
       },
       media: {
         height: 0,
