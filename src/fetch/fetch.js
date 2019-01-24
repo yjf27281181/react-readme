@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 let config = {
-    baseURL:'/api',
+    baseURL: 'http://localhost:3333/api',
     transformRequest: [
         function(data) {
             let ret = '';
@@ -34,5 +34,6 @@ export function get(url) {
 }
 
 export function post(url, data) {
+    console.log(config)
     return axios.post(url, data, config)
 }

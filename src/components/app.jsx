@@ -1,4 +1,4 @@
-import React, {Component} from 'react'
+import React, {Component, PropTypes} from 'react'
 import AppBar from './appbar/Appbar'
 import PDFViewer from './pdfviewer/PDFViewer';
 import classNames from "classnames";
@@ -8,6 +8,8 @@ import appStyle from 'assets/jss/appStyle'
 import Grid from '@material-ui/core/Grid';
 import Question from 'components/question/Question'
 import ToolKit from 'components/toolkit/Toolkit'
+import {connect} from 'react-redux'
+
 class App extends Component {
     state = {
         numPages: null,
@@ -30,8 +32,7 @@ class App extends Component {
         return (
             <div>
                 <div id="bgImg" style={{ backgroundImage: "url(" + image + ")", backgroundSize:"100% 100%"}}>
-
-                    <AppBar/>
+                    <AppBar userInfo="a"/>
                     <div className={classes.root}>
                         <Grid container spacing={24}>
                             <Grid item xs={1}>
@@ -45,7 +46,6 @@ class App extends Component {
                                     {
                                         this.state.isShowQuestion ? <Question point={this.state.questionPoint}/> : ""
                                     }
-                                    
                                 </div>
                                 
                             </Grid>
@@ -59,5 +59,21 @@ class App extends Component {
         )
     }
 }
+
+App.defaultProps = {
+    userInfo:{}
+};
+
+App.propsTypes = {
+    //userInfo:PropTypes.object.isRequired
+};
+
+function mapStateToProps(state) {
+    return{
+        userInfo:state.globalState.userInfo
+    }
+}
+
+connect(mapStateToProps)
 
 export default withStyles(appStyle)(App);

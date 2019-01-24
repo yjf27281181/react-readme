@@ -30,6 +30,7 @@ export function* loginFlow() {
         let response = yield call(login, request.username, request.password);
         if(response&&response.code === 0){
             yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'login success!',msgType:1});
+            console.log(response.data)
             yield put({type:IndexActionTypes.RESPONSE_USER_INFO,data:response.data})
         }
     }
