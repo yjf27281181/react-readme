@@ -5,10 +5,10 @@ let config = {
     transformRequest: [
         function(data) {
             let ret = '';
-            for(let it in data) {
-                ret+=encodeURIComponent(it)+'='+encodeURIComponent(data[it]) + '&';
-            }
-            return ret;
+            Object.keys(data).forEach(function(key){
+                ret+=encodeURIComponent(key)+'='+encodeURIComponent(data[key]) + '&';
+           });
+           return ret;
         }
     ],
 
@@ -34,6 +34,6 @@ export function get(url) {
 }
 
 export function post(url, data) {
-    console.log(config)
+    console.log(data)
     return axios.post(url, data, config)
 }

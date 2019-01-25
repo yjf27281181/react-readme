@@ -9,17 +9,26 @@ export const actionTypes = {
     GET_QUESTION: "GET_QUESTION",
     RESPONSE_QUESTION: "RESPONSE_QUESTION",
     GET_COMMENTS: "GET_COMMENTS",
-    RESPONSE_COMMENTS: "RESPONSE_COMMENTS"
+    RESPONSE_COMMENTS: "RESPONSE_COMMENTS",
+    POST_QUESTION: "POST_QUESTION",
+    POST_COMMENT: "POST_COMMENT",
 };
 
 export const actions = {
-    get_question: function (tag = '', pageNum = 1) {
+    get_questions: function (data) {
         return {
             type: actionTypes.GET_QUESTION,
-            tag,
-            pageNum
+            data
         }
     },
+    post_question: function(questionData) {
+        console.log(questionData)
+        return {
+            type: actionTypes.POST_QUESTION,
+            questionData
+        }
+    },
+
     get_comments: function (question_id) {
         return {
             type: actionTypes.GET_COMMENTS,

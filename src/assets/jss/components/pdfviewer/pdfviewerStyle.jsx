@@ -5,8 +5,7 @@
         top: 0,
         width: "60%", 
         height: "82%", 
-        backgroundColor:"#000",
-        opacity: 0.3
+        background: "rgba(0,0,0,0.1)"
     }
 }
 export default pdfviewerStyle

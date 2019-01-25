@@ -23,13 +23,13 @@ class Comment extends Component {
         <Grid item>
           <Grid container spacing={16}>
             <Grid item xs={12}>
-              <Typography bold="true" inline="true">
+              <Typography bold="true" inline={true}>
                 Dan Abramov
               </Typography>{" "}
-              <Typography light="true" inline="true">
+              <Typography light="true" inline={true}>
                 #1
               </Typography>{" "}
-              <Typography light="true" inline="true">
+              <Typography light="true" inline={true}>
                 ·
               </Typography>{" "}
               <Typography light="true" inline="true">
@@ -42,20 +42,20 @@ class Comment extends Component {
             </Grid>
             <Grid item xs={12}>
               <IconButton>
-                <Icon light="true" text="true">
+                <Icon light={true} text={true}>
                   mode_comment
                 </Icon>
               </IconButton>
-              <Typography light="true" inline="true">
+              <Typography light={true} inline={true}>
                 24
               </Typography>
 
-              <IconButton danger="true">
-                <Icon light="true" text="true">
+              <IconButton danger={true}>
+                <Icon light={true} text={true}>
                   favorite_border
                 </Icon>
               </IconButton>
-              <Typography light="true" inline="true" danger="true">
+              <Typography light={true} inline={true} danger={true}>
                 661
               </Typography>
             </Grid>

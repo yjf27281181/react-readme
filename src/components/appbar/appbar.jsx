@@ -19,7 +19,6 @@ class AppBar extends React.Component {
   }
   render() {
     const { classes, userInfo } = this.props;
-    console.log(this.props);
     return (
       <div id="navbar" className={classes.navbar}>
         <Header
@@ -56,7 +55,7 @@ class AppBar extends React.Component {
                 >
                   Settings
                 </Button>
-                <LoginDialog open={!this.props.userInfo.username} />
+                {/* <LoginDialog open={false} /> */}
               </ListItem>
             </List>
           }
@@ -71,7 +70,6 @@ AppBar.propTypes = {
 };
 
 function mapStateToProps(state) {
-  console.log(state)
   return {
     userInfo: state.globalState.userInfo
   };
