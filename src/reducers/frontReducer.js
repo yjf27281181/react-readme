@@ -1,13 +1,11 @@
 const initialState = {
-    category: [],
-    question: [],
-    comments: {},
-    pageNum: 1,
-    total: 0
+    questions: [],
+    comments: [],
+    pageNum: 1
 };
 export const actionTypes = {
-    GET_QUESTION: "GET_QUESTION",
-    RESPONSE_QUESTION: "RESPONSE_QUESTION",
+    GET_QUESTIONS: "GET_QUESTIONS",
+    RESPONSE_QUESTIONS: "RESPONSE_QUESTIONS",
     GET_COMMENTS: "GET_COMMENTS",
     RESPONSE_COMMENTS: "RESPONSE_COMMENTS",
     POST_QUESTION: "POST_QUESTION",
@@ -16,8 +14,9 @@ export const actionTypes = {
 
 export const actions = {
     get_questions: function (data) {
+        console.log(data);
         return {
-            type: actionTypes.GET_QUESTION,
+            type: actionTypes.GET_QUESTIONS,
             data
         }
     },
@@ -34,14 +33,21 @@ export const actions = {
             type: actionTypes.GET_COMMENTS,
             question_id
         }
+    },
+
+    post_comment: function (data) {
+        return {
+            type: actionTypes.POST_COMMENT,
+            data
+        }
     }
 };
 
 export function reducer(state = initialState, action) {
     switch (action.type) {
-        case actionTypes.RESPONSE_QUESTION:
+        case actionTypes.RESPONSE_QUESTIONS:
             return {
-                ...state, question: action.data, pageNum: action.data.pageNum, total: action.data.total
+                ...state, questions: action.questions
             };
         case actionTypes.RESPONSE_COMMNENTS:
             return {

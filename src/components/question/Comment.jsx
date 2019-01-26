@@ -23,7 +23,7 @@ class Comment extends Component {
         <Grid item>
           <Grid container spacing={16}>
             <Grid item xs={12}>
-              <Typography bold="true" inline={true}>
+              <Typography bold inline={true}>
                 Dan Abramov
               </Typography>{" "}
               <Typography light="true" inline={true}>

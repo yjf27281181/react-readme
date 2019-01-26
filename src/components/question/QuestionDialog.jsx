@@ -14,7 +14,7 @@ import {actions as frontActions} from 'reducers/frontReducer'
 class QuestionDialog extends React.Component {
   state = {
     title: "",
-    description:"",
+    content:"",
     userInfo: undefined
   }
 
@@ -24,9 +24,9 @@ class QuestionDialog extends React.Component {
     });
   }
 
-  handleDescriptionChange(e) {
+  handleContentChange(e) {
     this.setState({
-      description: e.target.value
+      content: e.target.value
     });
   }
 
@@ -37,8 +37,8 @@ class QuestionDialog extends React.Component {
       pageNum: this.props.pageNumber,
       pdfName: this.props.pdfName,
       title: this.state.title, 
-      description: this.state.description,
-      authorId: 23333
+      content: this.state.content,
+      authorId: 1
     });
     this.props.close();
   }
@@ -76,12 +76,11 @@ class QuestionDialog extends React.Component {
               label="description"
               multiline
               rows="4"
-              onChange={e => this.handleDescriptionChange(e)}
-              value={this.state.description}
+              onChange={e => this.handleCotentChange(e)}
+              value={this.state.content}
               margin="normal"
               variant="outlined"
               fullWidth
-              ref="description"
             />
           </DialogContent>
           <DialogActions>

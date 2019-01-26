@@ -24,6 +24,8 @@ class PDFViewer extends Component {
     };
     this.posX = 0;
     this.posY = 0;
+    this.isAddQuestion = false;
+    this.props.getQuestions({ pageNum: 1, pdfName: this.state.pdfName });
   }
 
   onDocumentLoadSuccess = ({ numPages }) => {
@@ -40,6 +42,10 @@ class PDFViewer extends Component {
     this.setState({ isOpenQuestionDialog: false });
   }.bind(this);
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ points: nextProps.points });
+  }
+
   render() {
     const { pageNumber, numPages, width, points } = this.state;
     const { classes } = this.props;
@@ -54,26 +60,29 @@ class PDFViewer extends Component {
         <div
           className={classes.mask}
           onClick={e => {
-            this.posX = e.nativeEvent.offsetX - 24;
-            this.posY = e.nativeEvent.offsetY - 24;
-            this.setState({ isOpenQuestionDialog: true });
+            if (this.isAddQuestion) {
+              console.log("map");
+              this.posX = e.nativeEvent.offsetX - 24;
+              this.posY = e.nativeEvent.offsetY - 24;
+              this.setState({ isOpenQuestionDialog: true });
+            }
           }}
           id="mask"
         >
           {points.map((point, index) => {
             return (
               <QPoint
-                key={index}
-                x={point.x}
-                y={point.y}
+                questionData={point}
                 opacity={point.opactiy}
-                onUpdateQuestion={() => this.props.onUpdateQuestion(point)}
+                onUpdateQuestion={e => {
+                  this.props.onUpdateQuestion(point);
+                }}
               />
             );
           })}
         </div>
         <QuestionDialog
-          open={this.state.isOpenQuestionDialog}
+          open={this.isAddQuestion && this.state.isOpenQuestionDialog}
           close={this.onCloseQuestionDialog}
           pageNumber={this.state.pageNumber}
           pdfName={this.state.pdfName}
@@ -88,12 +97,13 @@ class PDFViewer extends Component {
 
 function mapStateToProps(state) {
   return {
-    userInfo: state.globalState.userInfo
+    userInfo: state.globalState.userInfo,
+    points: state.front.questions
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    getQuestion: bindActionCreators(frontActions.get_question, dispatch)
+    getQuestions: bindActionCreators(frontActions.get_questions, dispatch)
     //register: bindActionCreators(IndexActions.get_register, dispatch)
   };
 }
