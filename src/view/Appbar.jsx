@@ -4,10 +4,10 @@ import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Button from "components/custombuttons/Button.jsx";
-import Header from "./Header.jsx";
+import Header from "../components/appbar/Header.jsx";
 
 import appbarStyle from "assets/jss/components/appbar/appbarStyle";
-import LoginDialog from "../login/LoginDialog.jsx";
+import LoginDialog from "./LoginDialog.jsx";
 import { connect } from "react-redux";
 
 class AppBar extends React.Component {

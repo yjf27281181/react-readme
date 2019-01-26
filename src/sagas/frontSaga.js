@@ -19,7 +19,6 @@ export function* postQuestionFlow () {
         let request = yield take(frontActionTypes.POST_QUESTION);
         
         var {questionData} = request;
-        console.log(questionData)
         let response = yield call(postQuestion, questionData);
         if(response&&response.code === 0){
             yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'upload success!',msgType:1});
@@ -29,7 +28,6 @@ export function* postQuestionFlow () {
 }
 
 export function* getQuestions(data) {
-    console.log(data);
     yield put({type: IndexActionTypes.FETCH_START})
     try {
         return yield call(get, `/question/get?pdfName=${data.pdfName}&pageNum=${data.pageNum}`)
@@ -46,7 +44,6 @@ export function* getQuestionsFlow () {
         let request = yield take(frontActionTypes.GET_QUESTIONS);
         var {data} = request;
         let response = yield call(getQuestions, data);
-        console.log(response)
         if(response&&response.code === 0){
             yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'get questions success',msgType:1});
             yield put({type:frontActionTypes.RESPONSE_QUESTIONS, questions: response.questions});
@@ -57,7 +54,6 @@ export function* getQuestionsFlow () {
 
 
 export function* postComment(data) {
-    console.log(data);
     yield put({type: IndexActionTypes.FETCH_START})
     try {
         return yield call(post, `/comment/post`, data)
@@ -84,7 +80,6 @@ export function* postCommentFlow () {
 }
 
 export function* getComments(questionId) {
-    console.log(questionId);
     yield put({type: IndexActionTypes.FETCH_START})
     try {
         return yield call(get, `/comment/get/${questionId}`)
@@ -99,9 +94,8 @@ export function* getComments(questionId) {
 export function* getCommentsFlow () {
     while(true){
         let request = yield take(frontActionTypes.GET_COMMENTS);
-        var {questionId} = request;
-        let response = yield call(getComments, questionId);
-        console.log(response)
+        var {question_id} = request;
+        let response = yield call(getComments, question_id);
         if(response&&response.code === 0){
             yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'post comment success',msgType:1});
             yield put({type:frontActionTypes.RESPONSE_COMMENTS, comments: response.comments});

@@ -1,13 +1,13 @@
 import React, { Component, PropTypes } from "react";
-import AppBar from "./appbar/Appbar";
-import PDFViewer from "./pdfviewer/PDFViewer";
+import AppBar from "view/Appbar";
+import PDFViewer from "view/PDFViewer";
 import classNames from "classnames";
 import withStyles from "@material-ui/core/styles/withStyles";
 import image from "assets/img/bg.jpg";
 import appStyle from "assets/jss/appStyle";
 import Grid from "@material-ui/core/Grid";
-import Question from "components/question/Question";
-import ToolKit from "components/toolkit/Toolkit";
+import Question from "view/Question";
+import ToolKit from "view/Toolkit";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actions as frontActions } from "reducers/frontReducer";
@@ -16,16 +16,12 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      pageNumber: 2,
       isShowQuestion: false,
-      questionPoint: null
+      questionPoint: null,
+      height: 400
     };
-    this.numPages = null;
   }
 
-  onDocumentLoadSuccess = ({ numPages }) => {
-    this.setState({ numPages });
-  };
 
   onUpdateQuestion = newPoint => {
     this.props.getComments(newPoint.id);
@@ -34,6 +30,14 @@ class App extends Component {
       questionPoint: newPoint
     });
   };
+
+  onCloseQuestion = () => {
+    this.setState({isShowQuestion: false})
+  }
+
+  setHeight = (height) => {
+    this.setState({height: height+40});
+  }
 
   render() {
     const { classes, ...rest } = this.props;
@@ -53,18 +57,21 @@ class App extends Component {
                 <ToolKit />
               </Grid>
               <Grid item xs={11}>
-                <div className={classNames(classes.main, classes.mainRaised)}>
+                <div className={classNames(classes.main, classes.mainRaised)} style={{height: this.state.height}}>
                   <div className={classes.container}>
                     <PDFViewer
                       onUpdateQuestion={question =>
                         this.onUpdateQuestion(question)
                       }
+                      setHeight = {(height) => this.setHeight(height)}
+                      onCloseQuestion = {this.onCloseQuestion}
                     />
                   </div>
                   <Question
                     point={this.state.questionPoint}
                     isShowQuestion={this.state.isShowQuestion}
                   />
+                  
                 </div>
               </Grid>
             </Grid>
@@ -96,9 +103,9 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-connect(
+App = connect(
   mapStateToProps,
   mapDispatchToProps
-);
+)(App);
 
 export default withStyles(appStyle)(App);

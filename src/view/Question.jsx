@@ -16,12 +16,11 @@ import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 
 import questionStyle from "assets/jss/components/question/questionStyle";
-import Comment from "components/question/Comment";
+import Comment from "view/Comment";
 import Divider from "@material-ui/core/Divider";
 
 import TextField from "@material-ui/core/TextField";
 import Button from "components/custombuttons/Button.jsx";
-import Favorite from "@material-ui/icons/Favorite";
 import NavigationIcon from "@material-ui/icons/Navigation";
 
 import { connect } from "react-redux";
@@ -55,6 +54,11 @@ class Question extends Component {
     console.log(this.state.comment);
     console.log(this.props.point);
   };
+
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.comments)
+    this.setState({ comments: nextProps.comments });
+  }
 
   render() {
     if (!this.props.isShowQuestion) {
@@ -100,14 +104,18 @@ class Question extends Component {
           </IconButton>
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-          <Divider />
-          <Comment />
-          <Divider />
+        {
+          this.state.comments.map((data, index)=> {
+            return <Comment data={data} key={index} />
+          })
+        }
+        <Divider/>
+          
 
           <TextField
             style={{ marginBottom: 0, marginTop: 20 }}
             id="standard-multiline-static"
-            label="Multiline"
+            label="reply: "
             multiline
             rows="4"
             defaultValue="Default Value"

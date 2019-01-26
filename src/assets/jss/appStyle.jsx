@@ -25,7 +25,7 @@ const appStyle = {
     main: {
       background: "#FFFFFF",
       position: "relative",
-      zIndex: "3"
+      zIndex: "3",
     },
     mainRaised: {
       margin: "60px 30px 0px",
