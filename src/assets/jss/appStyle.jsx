@@ -35,7 +35,13 @@ const appStyle = {
     },
     root: {
       flexGrow: 1,
-    }
+    },
+    navigation: {
+      backgroundPosition: "center center",
+      backgroundSize: "cover",
+      marginTop: "0",
+      height: "800px"
+    },
   };
   
   export default appStyle;

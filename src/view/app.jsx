@@ -22,7 +22,6 @@ class App extends Component {
     };
   }
 
-
   onUpdateQuestion = newPoint => {
     this.props.getComments(newPoint.id);
     this.setState({
@@ -32,50 +31,48 @@ class App extends Component {
   };
 
   onCloseQuestion = () => {
-    this.setState({isShowQuestion: false})
-  }
+    this.setState({ isShowQuestion: false });
+  };
 
-  setHeight = (height) => {
-    this.setState({height: height+40});
-  }
+  setHeight = height => {
+    this.setState({ height: height + 40 });
+  };
 
   render() {
     const { classes, ...rest } = this.props;
     return (
-      <div>
-        <div
-          id="bgImg"
-          style={{
-            backgroundImage: "url(" + image + ")",
-            backgroundSize: "100% 100%"
-          }}
+      <div
+          className={classes.navigation}
+          style={{ backgroundImage: "url(" + image + ")" }}
         >
-          <AppBar userInfo="a" />
-          <div className={classes.root}>
-            <Grid container spacing={24}>
-              <Grid item xs={1}>
-                <ToolKit />
-              </Grid>
-              <Grid item xs={11}>
-                <div className={classNames(classes.main, classes.mainRaised)} style={{height: this.state.height}}>
-                  <div className={classes.container}>
-                    <PDFViewer
-                      onUpdateQuestion={question =>
-                        this.onUpdateQuestion(question)
-                      }
-                      setHeight = {(height) => this.setHeight(height)}
-                      onCloseQuestion = {this.onCloseQuestion}
-                    />
-                  </div>
-                  <Question
-                    point={this.state.questionPoint}
-                    isShowQuestion={this.state.isShowQuestion}
-                  />
-                  
-                </div>
-              </Grid>
+        <AppBar />
+
+        <div className={classes.root}>
+          <Grid container spacing={24}>
+            <Grid item xs={1}>
+              <ToolKit />
             </Grid>
-          </div>
+            <Grid item xs={11}>
+              <div
+                className={classNames(classes.main, classes.mainRaised)}
+                style={{ height: this.state.height }}
+              >
+                <div className={classes.container}>
+                  <PDFViewer
+                    onUpdateQuestion={question =>
+                      this.onUpdateQuestion(question)
+                    }
+                    setHeight={height => this.setHeight(height)}
+                    onCloseQuestion={this.onCloseQuestion}
+                  />
+                </div>
+                <Question
+                  point={this.state.questionPoint}
+                  isShowQuestion={this.state.isShowQuestion}
+                />
+              </div>
+            </Grid>
+          </Grid>
         </div>
       </div>
     );

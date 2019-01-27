@@ -1,7 +1,8 @@
 const toolkitStyle = {
     tool: {
-        textAlign: "center",
-        marginTop: "60px"
+        position: "fixed",
+        left: "30px",
+        top: "150px",
     }   
 }
 

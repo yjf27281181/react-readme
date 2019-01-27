@@ -106,7 +106,7 @@ class Question extends Component {
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
         {
           this.state.comments.map((data, index)=> {
-            return <Comment data={data} key={index} />
+            return <Comment data={data} key={index} index={index} />
           })
         }
         <Divider/>

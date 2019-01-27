@@ -4,11 +4,13 @@ import { withStyles } from "@material-ui/core/styles";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Button from "components/custombuttons/Button.jsx";
-import Header from "../components/appbar/Header.jsx";
+import Header from "components/appbar/Header.jsx";
 
 import appbarStyle from "assets/jss/components/appbar/appbarStyle";
-import LoginDialog from "./LoginDialog.jsx";
 import { connect } from "react-redux";
+import Email from "@material-ui/icons/Email";
+import CustomDropdown from "components/customdropdown/CustomDropdown";
+import profileImage from "assets/img/usc.png";
 
 class AppBar extends React.Component {
   constructor(props) {
@@ -22,7 +24,7 @@ class AppBar extends React.Component {
     return (
       <div id="navbar" className={classes.navbar}>
         <Header
-          brand="Info Color"
+          brand="UNIVERSITY OF SOUTHERN CALIFORNIA"
           color="info"
           rightLinks={
             <List className={classes.list}>
@@ -33,7 +35,7 @@ class AppBar extends React.Component {
                   onClick={e => e.preventDefault()}
                   color="transparent"
                 >
-                  Discover
+                  INF553
                 </Button>
               </ListItem>
               <ListItem className={classes.listItem}>
@@ -43,7 +45,19 @@ class AppBar extends React.Component {
                   onClick={e => e.preventDefault()}
                   color="transparent"
                 >
-                  Profile
+                  CSCI570
+                </Button>
+              </ListItem>
+              <ListItem className={classes.listItem}>
+                <Button
+                  justIcon
+                  round
+                  href="#pablo"
+                  className={classes.notificationNavLink}
+                  onClick={e => e.preventDefault()}
+                  color="rose"
+                >
+                  <Email className={classes.icons} />
                 </Button>
               </ListItem>
               <ListItem className={classes.listItem}>
@@ -51,11 +65,32 @@ class AppBar extends React.Component {
                   href="#pablo"
                   className={classes.navLink}
                   onClick={e => e.preventDefault()}
-                  color="transparent"
+                  color="info"
                 >
-                  Settings
+                  login
                 </Button>
-                {/* <LoginDialog open={false} /> */}
+              </ListItem>
+
+              <ListItem className={classes.listItem}>
+                <CustomDropdown
+                  left
+                  caret={false}
+                  hoverColor="black"
+                  dropdownHeader="Dropdown Header"
+                  buttonText={
+                    <img
+                      src={profileImage}
+                      className={classes.img}
+                      alt="profile"
+                    />
+                  }
+                  buttonProps={{
+                    className:
+                      classes.navLink + " " + classes.imageDropdownButton,
+                    color: "transparent"
+                  }}
+                  dropdownList={["Me", "Settings and other stuff", "Sign out"]}
+                />
               </ListItem>
             </List>
           }

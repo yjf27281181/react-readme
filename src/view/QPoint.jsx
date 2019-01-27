@@ -17,7 +17,10 @@ export default class QPoint extends Component {
             color="primary"
             style={{position: "absolute", 
             left: questionData.pos_x, top: questionData.pos_y, opacity: 0.2}}
-            onClick={()=>this.props.onUpdateQuestion()}>
+            onClick={(e)=>{
+                e.stopPropagation()
+                this.props.onUpdateQuestion()}
+            }>
                 <HelpIcon />
             </IconButton>
         </div>

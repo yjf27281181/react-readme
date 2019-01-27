@@ -17,16 +17,9 @@ const appbarStyle = theme => ({
       marginBottom: "-20px",
       zIndex: "100",
       position: "relative",
-      overflow: "hidden",
       "& header": {
         borderRadius: "0"
       }
-    },
-    navigation: {
-      backgroundPosition: "center center",
-      backgroundSize: "cover",
-      marginTop: "0",
-      minHeight: "740px"
     },
     formControl: {
       margin: "0 !important",

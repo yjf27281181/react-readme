@@ -76,7 +76,7 @@ class QuestionDialog extends React.Component {
               label="description"
               multiline
               rows="4"
-              onChange={e => this.handleCotentChange(e)}
+              onChange={e => this.handleContentChange(e)}
               value={this.state.content}
               margin="normal"
               variant="outlined"

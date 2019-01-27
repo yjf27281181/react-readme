@@ -21,7 +21,7 @@ class PDFViewer extends Component {
       width: 1000,
       points: [],
       question: null,
-      isOpenQuestionDialog: true,
+      isOpenQuestionDialog: false,
       isAddingQuestion: false
     };
     this.posX = 0;
@@ -118,7 +118,7 @@ class PDFViewer extends Component {
         <div
           className={classes.mask}
           onClick={e => {
-            if (this.isAddQuestion) {
+            if (this.state.isAddingQuestion) {
               this.posX = e.nativeEvent.offsetX - 24;
               this.posY = e.nativeEvent.offsetY - 24;
               this.setState({ isOpenQuestionDialog: true });
@@ -139,7 +139,7 @@ class PDFViewer extends Component {
           })}
         </div>
         <QuestionDialog
-          open={this.state.isAddingQuestion && this.state.isOpenQuestionDialog}
+          open={this.state.isAddingQuestion & this.state.isOpenQuestionDialog}
           close={this.onCloseQuestionDialog}
           pageNumber={this.state.pageNumber}
           pdfName={this.state.pdfName}

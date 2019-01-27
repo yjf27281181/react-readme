@@ -14,7 +14,9 @@ class Comment extends Component {
     this.props = props;
   }
   render() {
-    const { classes } = this.props;
+    const { classes, data, index} = this.props;
+    const {} = this.props;
+    console.log(this.props)
     return (
       <Grid container spacing={8} wrap="nowrap">
         <Grid item>
@@ -24,32 +26,22 @@ class Comment extends Component {
           <Grid container spacing={16}>
             <Grid item xs={12}>
               <Typography bold inline={true}>
-                Dan Abramov
+                {data.username}
               </Typography>{" "}
               <Typography light="true" inline={true}>
-                #1
+                #{index+1}
               </Typography>{" "}
               <Typography light="true" inline={true}>
                 ·
               </Typography>{" "}
               <Typography light="true" inline="true">
-                Dec 17
+                {data.create_time}
               </Typography>
               <Typography>
-                In a way CSS is like Redux. You can learn the rules quickly.
-                That may mislead you into thinking. Trade same
+                {data.content}
               </Typography>
             </Grid>
             <Grid item xs={12}>
-              <IconButton>
-                <Icon light={true} text={true}>
-                  mode_comment
-                </Icon>
-              </IconButton>
-              <Typography light={true} inline={true}>
-                24
-              </Typography>
-
               <IconButton danger={true}>
                 <Icon light={true} text={true}>
                   favorite_border
