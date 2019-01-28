@@ -3,6 +3,8 @@ const initialState = {
   comments: [],
   pageNum: 1,
   isAddingQuestion: false,
+  pdfName: "ch1.pdf",
+  pdfData: {}
 };
 export const actionTypes = {
   GET_QUESTIONS: "GET_QUESTIONS",
@@ -11,7 +13,10 @@ export const actionTypes = {
   RESPONSE_COMMENTS: "RESPONSE_COMMENTS",
   POST_QUESTION: "POST_QUESTION",
   POST_COMMENT: "POST_COMMENT",
-  CHANGE_ADDING_MODE: "CHANGE_ADDING_MODE"
+  CHANGE_ADDING_MODE: "CHANGE_ADDING_MODE",
+  GET_PDF_NAMES: "GET_PDF_NAMES",
+  RESPONSE_PDF_NAMES: "RESPONSE_PDF_NAMES",
+  CHANGE_PDF_NAME: "CHANGE_PDF_NAME"
 };
 
 export const actions = {
@@ -42,10 +47,23 @@ export const actions = {
     };
   },
 
+  get_pdf_names: function(courseName) {
+    return {
+      type: actionTypes.GET_PDF_NAMES,
+      courseName
+    };
+  },
+
   change_adding_mode: function(isAddingQuestion) {
     return {
       type: actionTypes.CHANGE_ADDING_MODE,
       isAddingQuestion
+    };
+  },
+  change_pdf_name: function(pdfName) {
+    return {
+      type: actionTypes.CHANGE_PDF_NAME,
+      pdfName: pdfName
     };
   }
 };
@@ -66,6 +84,22 @@ export function reducer(state = initialState, action) {
       return {
         ...state,
         isAddingQuestion: action.isAddingQuestion
+      };
+    case actionTypes.RESPONSE_PDF_NAMES:
+      return {
+        ...state,
+        pdfData: action.pdfData
+      };
+
+    case actionTypes.RESPONSE_PDF_NAMES:
+      return {
+        ...state,
+        pdfData: action.pdfData
+      };
+    case actionTypes.CHANGE_PDF_NAME:
+      return {
+        ...state,
+        pdfName: action.pdfName
       };
 
     default:

@@ -5,28 +5,28 @@ import CardBody from "components/card/CardBody.jsx";
 import CardHeader from "components/card/CardHeader.jsx";
 import CardFooter from "components/card/CardFooter.jsx";
 import CustomInput from "components/custominput/CustomInput.jsx";
-import loginPageStyle from "assets/jss/components/login/loginDialogStyle.jsx";
+import loginAndDialogPageStyle from "assets/jss/components/loginandregister/loginAndRegisterStyle.jsx";
 import { withStyles } from "@material-ui/core";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Icon from "@material-ui/core/Icon";
-import Email from "@material-ui/icons/Email";
 import People from "@material-ui/icons/People";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogTitle from "@material-ui/core/DialogTitle";
 
-import {connect} from 'react-redux'
-import {bindActionCreators} from 'redux'
-import {actions as IndexActions} from 'reducers/index'
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actions as IndexActions } from "reducers/index";
 
-
-
-class LoginDialog extends Component {
+class LoginAndRegisterDialog extends Component {
   constructor(props) {
     super(props);
     // we use this to make the card to appear after the page has been rendered
     this.state = {
-      cardAnimaton: "cardHidden"
+      cardAnimaton: "cardHidden",
+      username: "",
+      password1: "",
+      password2: ""
     };
   }
   componentDidMount() {
@@ -39,23 +39,50 @@ class LoginDialog extends Component {
     );
   }
 
-  handleLogin (e) {
-    console.log("test login");
-    this.props.login("admin","123");
+  onChangeUsername = e => {
+    this.setState({ username: e.target.value });
+  };
+
+  onChangePassword1 = e => {
+    this.setState({ password1: e.target.value });
+  };
+
+  onChangePassword2 = e => {
+    this.setState({ password2: e.target.value });
+  };
+
+  handleLoginAndRegister(e) {
+    if (this.props.mode === "login") {
+      this.props.login(this.state.username, this.state.password1);
+    } else {
+      if(this.state.password1 !== this.state.password2) {
+        alert("password should be the same")
+        return
+      }
+      this.props.register({username: this.state.username, password: this.state.password1});
+    }
     e.preventDefault();
   }
 
   render() {
-    const { open } = this.props;
+    const { open, mode } = this.props;
     const { classes, ...rest } = this.props;
     return (
-      <Card className={classes[this.state.cardAnimaton]} >
-        <Dialog open={open} aria-labelledby="form-dialog-title" style={{width: "30%", margin: "auto"}}>
-          <br/>
-          <DialogTitle id="form-dialog-title"></DialogTitle>
-          <form className={classes.form} onSubmit={(e, values) => this.handleLogin(e)}>
+      <Card className={classes[this.state.cardAnimaton]}>
+        <Dialog
+          open={open}
+          aria-labelledby="form-dialog-title"
+          style={{ width: "30%", margin: "auto" }}
+          onClose={this.props.onClose}
+        >
+          <br />
+          <DialogTitle id="form-dialog-title" />
+          <form
+            className={classes.form}
+            onSubmit={(e, values) => this.handleLoginAndRegister(e)}
+          >
             <CardHeader color="primary" className={classes.cardHeader}>
-              <h4>Login</h4>
+              {mode === "login" ? <h4>Login</h4> : <h4>Register</h4>}
               <div className={classes.socialLine}>
                 <Button
                   justIcon
@@ -102,21 +129,7 @@ class LoginDialog extends Component {
                     </InputAdornment>
                   )
                 }}
-              />
-              <CustomInput
-                labelText="Email..."
-                id="email"
-                formControlProps={{
-                  fullWidth: true
-                }}
-                inputProps={{
-                  type: "email",
-                  endAdornment: (
-                    <InputAdornment position="end">
-                      <Email className={classes.inputIconsColor} />
-                    </InputAdornment>
-                  )
-                }}
+                onChange={this.onChangeUsername}
               />
               <CustomInput
                 labelText="Password"
@@ -134,7 +147,28 @@ class LoginDialog extends Component {
                     </InputAdornment>
                   )
                 }}
+                onChange={this.onChangePassword1}
               />
+              {mode === "register" ? (
+                <CustomInput
+                  labelText="Password"
+                  id="pass"
+                  formControlProps={{
+                    fullWidth: true
+                  }}
+                  inputProps={{
+                    type: "password",
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        <Icon className={classes.inputIconsColor}>
+                          lock_outline
+                        </Icon>
+                      </InputAdornment>
+                    )
+                  }}
+                  onChange={this.onChangePassword2}
+                />
+              ) : null}
             </CardBody>
             <CardFooter className={classes.cardFooter}>
               <Button type="submit" simple color="primary" size="lg">
@@ -149,18 +183,17 @@ class LoginDialog extends Component {
 }
 
 function mapStateToProps(state) {
-  return{
-  }
+  return {};
 }
 function mapDispatchToProps(dispatch) {
-  return{
-      login: bindActionCreators(IndexActions.get_login, dispatch),
-      //register: bindActionCreators(IndexActions.get_register, dispatch)
-  }
+  return {
+    login: bindActionCreators(IndexActions.get_login, dispatch),
+    register: bindActionCreators(IndexActions.get_register, dispatch)
+  };
 }
-LoginDialog = connect(
+LoginAndRegisterDialog = connect(
   mapStateToProps,
   mapDispatchToProps
-)(LoginDialog)
+)(LoginAndRegisterDialog);
 
-export default withStyles(loginPageStyle)(LoginDialog);
+export default withStyles(loginAndDialogPageStyle)(LoginAndRegisterDialog);

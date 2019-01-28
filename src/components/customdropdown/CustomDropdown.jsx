@@ -32,10 +32,10 @@ class CustomDropdown extends React.Component {
   handleClick() {
     this.setState(state => ({ open: !state.open }));
   }
-  handleClose(param) {
+  handleClose(item) {
     this.setState({ open: false });
     if(this.props && this.props.onClick){
-      this.props.onClick(param);
+      this.props.onClick(item);
     }
   }
   handleCloseAway = event => {
@@ -144,7 +144,7 @@ class CustomDropdown extends React.Component {
                         return (
                           <Divider
                             key={key}
-                            onClick={this.handleClose}
+                            onClick={(e) => e.stopPropagation()}
                             className={classes.dropdownDividerItem}
                           />
                         );
@@ -152,7 +152,7 @@ class CustomDropdown extends React.Component {
                       return (
                         <MenuItem
                           key={key}
-                          onClick={this.handleClose}
+                          onClick={(e) => this.handleClose(prop)}
                           className={dropdownItem}
                         >
                           {prop}

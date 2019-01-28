@@ -1,9 +1,10 @@
 CREATE TABLE user(
     id INT AUTO_INCREMENT PRIMARY KEY,
-    username VARCHAR(20) UNIQUE,
+    username VARCHAR(20),
     pass_word VARCHAR(100),
-    create_time DATETIME
-);
+    create_time DATETIME,
+    UNIQUE KEY `username` (`username`)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE question (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -17,7 +18,7 @@ CREATE TABLE question (
     create_time DATETIME,
     like_num INT,
     FOREIGN KEY (author_id) REFERENCES user(id)
-);
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE comment (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -25,5 +26,13 @@ CREATE TABLE comment (
     question_id INT REFERENCES question(id),
     create_time DATETIME,
     like_num INT,
-    content VARCHAR(300)
-);
+    content VARCHAR(300),
+    FOREIGN KEY (author_id) REFERENCES user(id),
+    FOREIGN KEY (question_id) REFERENCES question(id)
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE course (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    course_name VARCHAR(20),
+    pdf_name VARCHAR(100) 
+)ENGINE=InnoDB DEFAULT CHARSET=utf8;

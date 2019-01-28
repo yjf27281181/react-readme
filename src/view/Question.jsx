@@ -33,7 +33,8 @@ class Question extends Component {
     this.state = {
       expanded: false,
       comments: [],
-      content: ""
+      content: "",
+      userInfo: null,
     };
   }
 
@@ -49,15 +50,17 @@ class Question extends Component {
     this.props.postComment({
       content: this.state.content,
       questionId: this.props.point.id,
-      authorId: 1
+      authorId: this.state.userInfo.userId
     });
-    console.log(this.state.comment);
-    console.log(this.props.point);
+    this.setState({content:""})
   };
 
   componentWillReceiveProps(nextProps) {
-    console.log(nextProps.comments)
-    this.setState({ comments: nextProps.comments });
+    this.setState({ 
+      comments: nextProps.comments,
+      userInfo: nextProps.userInfo
+    });
+
   }
 
   render() {

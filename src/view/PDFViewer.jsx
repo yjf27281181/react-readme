@@ -22,19 +22,19 @@ class PDFViewer extends Component {
       points: [],
       question: null,
       isOpenQuestionDialog: false,
-      isAddingQuestion: false
+      isAddingQuestion: false,
     };
     this.posX = 0;
     this.posY = 0;
-    this.props.getQuestions({ pageNum: 1, pdfName: this.state.pdfName });
     this.onCloseQuestionDialog.bind(this);
   }
 
   onDocumentLoadSuccess = (pdf) => {
-    this.setState({ numPages: pdf.numPages, pages: this.calPageList(1, pdf.numPages) });
+    this.setState({ numPages: pdf.numPages, pages: this.calPageList(1, pdf.numPages) ,pageNumber:1});
+    this.props.getQuestions({ pageNum: 1, pdfName: this.state.pdfName });
+    
   };
   onPageLoadSuccess = ({height}) => {
-    console.log(height)
     this.props.setHeight(height);
   };
 
@@ -52,9 +52,12 @@ class PDFViewer extends Component {
     this.setState({ 
       points: nextProps.points,
       userInfo: nextProps.userInfo,
-      isAddingQuestion: nextProps.isAddingQuestion
+      isAddingQuestion: nextProps.isAddingQuestion, 
+      pdfName: nextProps.pdfName
     });
-    console.log(nextProps)
+    if(nextProps.msg.type===1 && nextProps.msg.content ==='post question') {
+      this.props.getQuestions({ pageNum: this.state.pageNumber, pdfName: this.state.pdfName });
+    }
   }
 
   onChangePage = text => {
@@ -105,13 +108,12 @@ class PDFViewer extends Component {
     return (
       <div>
         <Document
-          file={this.state.pdfName}
+          file={"./"+this.state.pdfName}
           onLoadSuccess={this.onDocumentLoadSuccess}
         >
           <Page
             pageNumber={pageNumber}
             width={width}
-            style={{ zIndex: "5" }}
             onLoadSuccess={this.onPageLoadSuccess}
           />
         </Document>
@@ -119,6 +121,10 @@ class PDFViewer extends Component {
           className={classes.mask}
           onClick={e => {
             if (this.state.isAddingQuestion) {
+              if(!this.state.userInfo.username) {
+                alert("please login first")
+                return;
+              }
               this.posX = e.nativeEvent.offsetX - 24;
               this.posY = e.nativeEvent.offsetY - 24;
               this.setState({ isOpenQuestionDialog: true });
@@ -160,11 +166,12 @@ class PDFViewer extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state)
   return {
     userInfo: state.globalState.userInfo,
     points: state.front.questions,
-    isAddingQuestion: state.front.isAddingQuestion
+    isAddingQuestion: state.front.isAddingQuestion,
+    pdfName: state.front.pdfName,
+    msg: state.globalState.msg
   };
 }
 function mapDispatchToProps(dispatch) {

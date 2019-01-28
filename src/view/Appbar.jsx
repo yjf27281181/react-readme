@@ -7,36 +7,84 @@ import Button from "components/custombuttons/Button.jsx";
 import Header from "components/appbar/Header.jsx";
 
 import appbarStyle from "assets/jss/components/appbar/appbarStyle";
-import { connect } from "react-redux";
 import Email from "@material-ui/icons/Email";
 import CustomDropdown from "components/customdropdown/CustomDropdown";
-import profileImage from "assets/img/usc.png";
+import uscImage from "assets/img/usc.png";
+import LoginAndRegisterDialog from "view/LoginAndRegisterDialog.jsx";
 
+import { connect } from "react-redux";
+import { bindActionCreators } from "redux";
+import { actions as frontActions } from "reducers/frontReducer";
+import { actions as IndexActions } from "reducers/index";
+import FaceIcon from "@material-ui/icons/Face";
 class AppBar extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isOpenLogin: true
+      isOpenDialog: false,
+      userInfo: {},
+      mode: "",
+      inf553pdfs: [],
+      csci570pdfs: []
     };
+    this.props.getPDFNames("INF553");
+    this.props.getPDFNames("CSCI570");
+
+    this.handleChooseItem = this.handleChooseItem.bind(this);
   }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.pdfData.courseName === "INF553") {
+      this.setState({
+        userInfo: nextProps.userInfo,
+        inf553pdfs: nextProps.pdfData.pdfNames
+      });
+    }
+
+    if (nextProps.pdfData.courseName === "CSCI570") {
+      this.setState({
+        userInfo: nextProps.userInfo,
+        csci570pdfs: nextProps.pdfData.pdfNames
+      });
+    }
+  }
+
+  handleChooseItem(item) {
+    if(item === 'Sign out') {
+      this.props.userSignout();
+    }
+  }
+
   render() {
-    const { classes, userInfo } = this.props;
+    const { classes } = this.props;
     return (
       <div id="navbar" className={classes.navbar}>
         <Header
           brand="UNIVERSITY OF SOUTHERN CALIFORNIA"
           color="info"
+          leftLinks={
+            <List className={classes.list}>
+              <ListItem className={classes.listItem}>
+                <img src={uscImage} className={classes.img} alt="profile" />
+              </ListItem>
+            </List>
+          }
           rightLinks={
             <List className={classes.list}>
               <ListItem className={classes.listItem}>
-                <Button
-                  href="#pablo"
-                  className={classes.navLink + " " + classes.navLinkActive}
-                  onClick={e => e.preventDefault()}
-                  color="transparent"
-                >
-                  INF553
-                </Button>
+                <CustomDropdown
+                  left
+                  caret={false}
+                  hoverColor="black"
+                  dropdownHeader="INF 553"
+                  buttonText={"INF 553"}
+                  buttonProps={{
+                    className: classes.navLink,
+                    color: "transparent"
+                  }}
+                  onClick={(name) => this.props.changePdfName(name)}
+                  dropdownList={this.state.inf553pdfs}
+                />
               </ListItem>
               <ListItem className={classes.listItem}>
                 <Button
@@ -60,40 +108,57 @@ class AppBar extends React.Component {
                   <Email className={classes.icons} />
                 </Button>
               </ListItem>
-              <ListItem className={classes.listItem}>
-                <Button
-                  href="#pablo"
-                  className={classes.navLink}
-                  onClick={e => e.preventDefault()}
-                  color="info"
-                >
-                  login
-                </Button>
-              </ListItem>
+              {this.state.userInfo.username ? (
+                <ListItem className={classes.listItem}>
+                  <CustomDropdown
+                    left
+                    caret={false}
+                    hoverColor="black"
+                    dropdownHeader={this.state.userInfo.username}
+                    buttonText={<FaceIcon />}
+                    onClick={this.handleChooseItem}
+                    buttonProps={{
+                      className: classes.navLink,
+                      color: "transparent"
+                    }}
+                    dropdownList={[
+                      "Me",
+                      "Sign out"
+                    ]}
+                  />
+                </ListItem>
+              ) : (
+                  <ListItem className={classes.listItem}>
+                    <Button
+                      href="#pablo"
+                      className={classes.navLink}
+                      onClick={e => {
+                        this.setState({ isOpenDialog: true, mode: "login" });
+                      }}
+                      color="info"
+                    >
+                      login
+                    </Button>
+                    <Button
+                      href="#pablo"
+                      className={classes.navLink}
+                      onClick={e => {
+                        this.setState({ isOpenDialog: true, mode: "register" });
+                      }}
+                      color="info"
+                    >
+                      register
+                    </Button>
+                  </ListItem>
 
-              <ListItem className={classes.listItem}>
-                <CustomDropdown
-                  left
-                  caret={false}
-                  hoverColor="black"
-                  dropdownHeader="Dropdown Header"
-                  buttonText={
-                    <img
-                      src={profileImage}
-                      className={classes.img}
-                      alt="profile"
-                    />
-                  }
-                  buttonProps={{
-                    className:
-                      classes.navLink + " " + classes.imageDropdownButton,
-                    color: "transparent"
-                  }}
-                  dropdownList={["Me", "Settings and other stuff", "Sign out"]}
-                />
-              </ListItem>
+              )}
             </List>
           }
+        />
+        <LoginAndRegisterDialog
+          open={!this.state.userInfo.username && this.state.isOpenDialog}
+          mode={this.state.mode}
+          onClose={() => {this.setState({isOpenDialog: false})}}
         />
       </div>
     );
@@ -106,10 +171,22 @@ AppBar.propTypes = {
 
 function mapStateToProps(state) {
   return {
-    userInfo: state.globalState.userInfo
+    userInfo: state.globalState.userInfo,
+    pdfData: state.front.pdfData
   };
 }
 
-AppBar = connect(mapStateToProps)(AppBar);
+function mapDispatchToProps(dispatch) {
+  return {
+    getPDFNames: bindActionCreators(frontActions.get_pdf_names, dispatch),
+    userSignout: bindActionCreators(IndexActions.user_signout, dispatch),
+    changePdfName: bindActionCreators(frontActions.change_pdf_name, dispatch),
+  };
+}
+
+AppBar = connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AppBar);
 
 export default withStyles(appbarStyle)(AppBar);

@@ -22,8 +22,9 @@ class Toolkit extends Component {
   }
 
   onChangeMode = () => {
+      this.props.onChangeMode(!this.state.isAddingQuestion)
       this.setState({isAddingQuestion: !this.state.isAddingQuestion});
-      this.props.onChangeMode(this.state.isAddingQuestion)
+      
   };
 
   render() {
@@ -34,6 +35,7 @@ class Toolkit extends Component {
           color="secondary"
           aria-label="Edit"
           onClick={this.onChangeMode}
+          style={{opacity: this.state.isAddingQuestion?1:0.3}}
         >
           <Icon>edit_icon</Icon>
         </Fab>

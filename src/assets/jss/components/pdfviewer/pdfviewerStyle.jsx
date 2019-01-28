@@ -5,7 +5,7 @@
         top: 0,
         width: "60%", 
         height: "82%", 
-        background: "rgba(0,0,0,0.1)"
+        background: "rgba(0,0,0,0)"
     }
 }
 export default pdfviewerStyle

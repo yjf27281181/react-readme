@@ -11,6 +11,7 @@ import ToolKit from "view/Toolkit";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actions as frontActions } from "reducers/frontReducer";
+import { actions as IndexActions } from "reducers/index";
 
 class App extends Component {
   constructor(props) {
@@ -38,13 +39,29 @@ class App extends Component {
     this.setState({ height: height + 40 });
   };
 
+
+  componentWillReceiveProps(nextProps) {
+    this.setState({ 
+      userInfo: nextProps.userInfo
+    });
+
+    if(nextProps.msg.type===1 && nextProps.msg.content ==='post comment') {
+      this.props.getComments(this.state.questionPoint.id);
+    }
+
+  }
+
+  componentDidMount() {
+    this.props.userAuth();
+  }
+
   render() {
     const { classes, ...rest } = this.props;
     return (
       <div
-          className={classes.navigation}
-          style={{ backgroundImage: "url(" + image + ")" }}
-        >
+        className={classes.navigation}
+        style={{ backgroundImage: "url(" + image + ")" }}
+      >
         <AppBar />
 
         <div className={classes.root}>
@@ -89,14 +106,15 @@ App.propsTypes = {
 
 function mapStateToProps(state) {
   return {
-    userInfo: state.globalState.userInfo
+    userInfo: state.globalState.userInfo,
+    msg: state.globalState.msg
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getComments: bindActionCreators(frontActions.get_comments, dispatch)
-    //register: bindActionCreators(IndexActions.get_register, dispatch)
+    getComments: bindActionCreators(frontActions.get_comments, dispatch),
+    userAuth: bindActionCreators(IndexActions.user_auth, dispatch)
   };
 }
 

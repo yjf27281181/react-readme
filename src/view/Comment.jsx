@@ -16,7 +16,6 @@ class Comment extends Component {
   render() {
     const { classes, data, index} = this.props;
     const {} = this.props;
-    console.log(this.props)
     return (
       <Grid container spacing={8} wrap="nowrap">
         <Grid item>

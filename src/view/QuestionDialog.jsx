@@ -30,6 +30,12 @@ class QuestionDialog extends React.Component {
     });
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({ 
+      userInfo: nextProps.userInfo,
+    });
+  }
+
   handleSumbmit() {
     this.props.postQuestion({
       posX: this.props.posX,
@@ -38,8 +44,9 @@ class QuestionDialog extends React.Component {
       pdfName: this.props.pdfName,
       title: this.state.title, 
       content: this.state.content,
-      authorId: 1
+      authorId: this.state.userInfo.userId
     });
+    this.setState({title:"", content:""})
     this.props.close();
   }
   handleCancel() {

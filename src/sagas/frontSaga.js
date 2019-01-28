@@ -11,17 +11,19 @@ export function* postQuestion(questionData) {
         yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'something wrong in server',msgType:0});
     } finally {
         yield put({type: IndexActionTypes.FETCH_END});
+        //yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'',msgType:1});
     }
 }
 
 export function* postQuestionFlow () {
     while(true){
-        let request = yield take(frontActionTypes.POST_QUESTION);
+        const request = yield take(frontActionTypes.POST_QUESTION);
         
-        var {questionData} = request;
-        let response = yield call(postQuestion, questionData);
+        const {questionData} = request;
+        const response = yield call(postQuestion, questionData);
+        console.log(response)
         if(response&&response.code === 0){
-            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'upload success!',msgType:1});
+            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'post question',msgType:1});
         }
 
     }
@@ -43,6 +45,7 @@ export function* getQuestionsFlow () {
     while(true){
         let request = yield take(frontActionTypes.GET_QUESTIONS);
         var {data} = request;
+        console.log(data);
         let response = yield call(getQuestions, data);
         if(response&&response.code === 0){
             yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'get questions success',msgType:1});
@@ -72,7 +75,7 @@ export function* postCommentFlow () {
         let response = yield call(postComment, data);
         console.log(response)
         if(response&&response.code === 0){
-            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'post comment success',msgType:1});
+            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'post comment',msgType:1});
             //yield put({type:frontActionTypes.RESPONSE_QUESTIONS, questions: response.questions});
         }
 
@@ -99,6 +102,24 @@ export function* getCommentsFlow () {
         if(response&&response.code === 0){
             yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'post comment success',msgType:1});
             yield put({type:frontActionTypes.RESPONSE_COMMENTS, comments: response.comments});
+        }
+
+    }
+}
+
+export function* getPDfNamesFlow () {
+    while(true){
+        const request = yield take(frontActionTypes.GET_PDF_NAMES);
+        yield put({type: IndexActionTypes.FETCH_START})
+        const response = yield call(get, `/pdf/get/${request.courseName}`)
+        console.log(response)
+        if(response&&response.code === 0){
+            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'get PDF name success!',msgType:1});
+            console.log({pdfData: {courseName: response.courseName,
+                pdfNames: response.pdfNames}})
+            yield put({type:frontActionTypes.RESPONSE_PDF_NAMES, pdfData: {courseName: response.courseName,
+            pdfNames: response.pdfNames}});
+            
         }
 
     }

@@ -6,6 +6,7 @@
     "@material-ui/core": "^3.9.0",
     "@material-ui/icons": "^3.0.2",
     "axios": "^0.18.0",
+    "jsonwebtoken": "^8.4.0",
     "material-ui": "^1.0.0-beta.47",
     "qs": "^6.6.0",
     "react": "^16.7.0",
