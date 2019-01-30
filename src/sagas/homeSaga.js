@@ -7,7 +7,7 @@ export function* login(username, password) {
     try {
         return yield call(post, '/user/login', {username, password})
     } catch(error) {
-        yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'username or password is wrong',msgType:0});
+        yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'login failed',msgType:0});
     } finally {
         yield put({type: IndexActionTypes.FETCH_END});
     }
@@ -16,9 +16,11 @@ export function* login(username, password) {
 export function* register(data) {
     yield put({type: IndexActionTypes.FETCH_START})
     try {
-        return yield call(post, '/user/register', data)
+        const response = yield call(post, '/user/register', data)
+        return response;
     } catch (error) {
-        yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'register failed',msgType:0})
+        console.log(error)
+        yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:"register failed",msgType:0})
     } finally {
         yield put({type: IndexActionTypes.FETCH_END});
     }
@@ -30,7 +32,7 @@ export function* loginFlow() {
         let response = yield call(login, request.username, request.password);
         console.log(response)
         if(response&&response.code === 0){
-            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'login success!',msgType:1});
+            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'login success',msgType:1});
             localStorage.setItem("jwttoken",response.data.token);
             yield put({type:IndexActionTypes.RESPONSE_USER_INFO,data:response.data})
         }
@@ -41,8 +43,9 @@ export function* registerFlow () {
     while(true){
         let request = yield take(IndexActionTypes.USER_REGISTER);
         let response = yield call(register, request.data);
+        console.log(response)
         if(response&&response.code === 0){
-            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'register success!',msgType:1});
+            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'register success',msgType:1});
             yield put({type:IndexActionTypes.RESPONSE_USER_INFO,data:response.data})
         }
 

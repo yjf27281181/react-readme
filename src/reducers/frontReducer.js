@@ -1,10 +1,12 @@
 const initialState = {
   questions: [],
+  recentQuestions: [],
   comments: [],
-  pageNum: 1,
+  pageNumber: 1,
   isAddingQuestion: false,
   pdfName: "ch1.pdf",
-  pdfData: {}
+  pdfData: {},
+  activeQuestion: null
 };
 export const actionTypes = {
   GET_QUESTIONS: "GET_QUESTIONS",
@@ -16,7 +18,10 @@ export const actionTypes = {
   CHANGE_ADDING_MODE: "CHANGE_ADDING_MODE",
   GET_PDF_NAMES: "GET_PDF_NAMES",
   RESPONSE_PDF_NAMES: "RESPONSE_PDF_NAMES",
-  CHANGE_PDF_NAME: "CHANGE_PDF_NAME"
+  CHANGE_PDF: "CHANGE_PDF",
+  CHANGE_ACTIVE_QUESTION: "CHANGE_ACTIVE_QUESTION",
+  GET_RECENT_QUESTIONS: "GET_RECENT_QUESTIONS",
+  RESPONSE_RECENT_QUESTIONS: "RESPONSE_RECENT_QUESTIONS"
 };
 
 export const actions = {
@@ -60,10 +65,23 @@ export const actions = {
       isAddingQuestion
     };
   },
-  change_pdf_name: function(pdfName) {
+  change_pdf: function(pdfName, pageNumber) {
     return {
-      type: actionTypes.CHANGE_PDF_NAME,
-      pdfName: pdfName
+      type: actionTypes.CHANGE_PDF,
+      pdfName: pdfName,
+      pageNumber: pageNumber
+    };
+  },
+  change_active_question: function(question) {
+    return {
+      type: actionTypes.CHANGE_ACTIVE_QUESTION,
+      question: question
+    };
+  },
+
+  get_recent_questions: function() {
+    return {
+      type: actionTypes.GET_RECENT_QUESTIONS
     };
   }
 };
@@ -96,10 +114,21 @@ export function reducer(state = initialState, action) {
         ...state,
         pdfData: action.pdfData
       };
-    case actionTypes.CHANGE_PDF_NAME:
+    case actionTypes.CHANGE_PDF:
       return {
         ...state,
-        pdfName: action.pdfName
+        pdfName: action.pdfName,
+        pageNumber: action.pageNumber
+      };
+    case actionTypes.CHANGE_ACTIVE_QUESTION:
+      return {
+        ...state,
+        activeQuestion: action.question
+      };
+    case actionTypes.RESPONSE_RECENT_QUESTIONS:
+      return {
+        ...state,
+        recentQuestions: action.recentQuestions
       };
 
     default:

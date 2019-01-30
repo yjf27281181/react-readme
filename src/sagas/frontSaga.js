@@ -43,13 +43,26 @@ export function* getQuestions(data) {
 
 export function* getQuestionsFlow () {
     while(true){
-        let request = yield take(frontActionTypes.GET_QUESTIONS);
+        const request = yield take(frontActionTypes.GET_QUESTIONS);
         var {data} = request;
         console.log(data);
         let response = yield call(getQuestions, data);
         if(response&&response.code === 0){
             yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'get questions success',msgType:1});
             yield put({type:frontActionTypes.RESPONSE_QUESTIONS, questions: response.questions});
+        }
+
+    }
+}
+
+export function* getRecentQuestionsFlow () {
+    while(true){
+        yield take(frontActionTypes.GET_RECENT_QUESTIONS);
+        const response = yield call(get, `/question/recent`)
+        console.log(response)
+        if(response&&response.code === 0){
+            yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'get recent questions success',msgType:1});
+            yield put({type:frontActionTypes.RESPONSE_RECENT_QUESTIONS, recentQuestions: response.recentQuestions});
         }
 
     }

@@ -17,7 +17,7 @@ CREATE TABLE question (
     author_id INT,
     create_time DATETIME,
     like_num INT,
-    FOREIGN KEY (author_id) REFERENCES user(id)
+    FOREIGN KEY (author_id) REFERENCES user(id) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE comment (
@@ -27,8 +27,8 @@ CREATE TABLE comment (
     create_time DATETIME,
     like_num INT,
     content VARCHAR(300),
-    FOREIGN KEY (author_id) REFERENCES user(id),
-    FOREIGN KEY (question_id) REFERENCES question(id)
+    FOREIGN KEY (author_id) REFERENCES user(id) ON DELETE CASCADE,
+    FOREIGN KEY (question_id) REFERENCES question(id) ON DELETE CASCADE
 )ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 CREATE TABLE course (

@@ -1,7 +1,9 @@
 import axios from "axios";
+import myconfig from "../conf";
 
 let config = {
-  baseURL: "http://34.229.101.241:3333/api",
+  baseURL: myconfig.serverURL,
+  //baseURL: "http://34.229.101.241:3333/api",
   transformRequest: [
     function(data) {
       if (data) {

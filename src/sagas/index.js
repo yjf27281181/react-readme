@@ -1,7 +1,7 @@
 import {fork} from 'redux-saga/effects'
 import {loginFlow, registerFlow, user_auth} from './homeSaga'
 import {postQuestionFlow, getQuestionsFlow, postCommentFlow, getCommentsFlow,
-    getPDfNamesFlow} from './frontSaga'
+    getPDfNamesFlow, getRecentQuestionsFlow} from './frontSaga'
 //import {get_all_users_flow} from './adminManagerUsersSaga'
 //import {getAllTagsFlow, addTagFlow, delTagFlow} from './adminManagerTagsSaga'
 //import {saveArticleFlow} from './adminManagerNewArticleSaga'
@@ -17,7 +17,7 @@ export default function* rootSaga() {
     yield  fork(postCommentFlow);
     yield  fork(getCommentsFlow);
     yield  fork(getPDfNamesFlow);
-    // yield fork(getArticleListFlow);
+    yield  fork(getRecentQuestionsFlow);
     // yield fork(deleteArticleFlow);
     // yield fork(getArticlesListFlow);
     // yield fork(getArticleDetailFlow);

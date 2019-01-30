@@ -47,6 +47,10 @@ class AppBar extends React.Component {
         csci570pdfs: nextProps.pdfData.pdfNames
       });
     }
+
+    if(nextProps.msg.type===1 && nextProps.msg.content ==='register success') {
+      this.setState({isOpenDialog:false})
+    }
   }
 
   handleChooseItem(item) {
@@ -82,7 +86,11 @@ class AppBar extends React.Component {
                     className: classes.navLink,
                     color: "transparent"
                   }}
-                  onClick={(name) => this.props.changePdfName(name)}
+                  onClick={(name) => {
+                    this.props.changePdf(name,1)
+                    this.props.changeActiveQuestion(null)
+                  }
+                }
                   dropdownList={this.state.inf553pdfs}
                 />
               </ListItem>
@@ -107,6 +115,7 @@ class AppBar extends React.Component {
                 >
                   <Email className={classes.icons} />
                 </Button>
+                
               </ListItem>
               {this.state.userInfo.username ? (
                 <ListItem className={classes.listItem}>
@@ -172,7 +181,8 @@ AppBar.propTypes = {
 function mapStateToProps(state) {
   return {
     userInfo: state.globalState.userInfo,
-    pdfData: state.front.pdfData
+    pdfData: state.front.pdfData,
+    msg: state.globalState.msg
   };
 }
 
@@ -180,7 +190,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getPDFNames: bindActionCreators(frontActions.get_pdf_names, dispatch),
     userSignout: bindActionCreators(IndexActions.user_signout, dispatch),
-    changePdfName: bindActionCreators(frontActions.change_pdf_name, dispatch),
+    changePdf: bindActionCreators(frontActions.change_pdf, dispatch),
+    changeActiveQuestion: bindActionCreators(frontActions.change_active_question, dispatch),
   };
 }
 

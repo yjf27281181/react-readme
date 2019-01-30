@@ -8,7 +8,7 @@ const commentStyle = {
   orangeAvatar: {
     margin: 10,
     color: "#fff",
-    backgroundColor: deepOrange[500]
+    //backgroundColor: deepOrange[500]
   },
   purpleAvatar: {
     margin: 10,

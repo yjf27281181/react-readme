@@ -19,8 +19,8 @@ class PDFViewer extends Component {
       pageNumber: 1,
       pages: [],
       width: 1000,
-      points: [],
-      question: null,
+      questions: [],
+      activeQuestion: null,
       isOpenQuestionDialog: false,
       isAddingQuestion: false,
     };
@@ -30,19 +30,15 @@ class PDFViewer extends Component {
   }
 
   onDocumentLoadSuccess = (pdf) => {
-    this.setState({ numPages: pdf.numPages, pages: this.calPageList(1, pdf.numPages) ,pageNumber:1});
-    this.props.getQuestions({ pageNum: 1, pdfName: this.state.pdfName });
-    
+    this.setState({ numPages: pdf.numPages});
   };
   onPageLoadSuccess = ({height}) => {
     this.props.setHeight(height);
+    this.setState({pageNumber: this.state.pageNumber})
+    this.onChangePage(this.state.pageNumber)
+    this.props.getQuestions({ pageNum: this.state.pageNumber, pdfName: this.state.pdfName });
   };
 
-  onAddPoint(e) {
-    var points = this.state.points;
-    points.push({ x: this.posX, y: this.posY, opacity: 0.5 });
-    this.setState({ points: points });
-  };
 
   onCloseQuestionDialog= function() {
     this.setState({ isOpenQuestionDialog: false });
@@ -50,11 +46,13 @@ class PDFViewer extends Component {
 
   componentWillReceiveProps(nextProps) {
     this.setState({ 
-      points: nextProps.points,
+      questions: nextProps.questions,
       userInfo: nextProps.userInfo,
       isAddingQuestion: nextProps.isAddingQuestion, 
-      pdfName: nextProps.pdfName
+      pdfName: nextProps.pdfName,
+      activeQuestion: nextProps.activeQuestion
     });
+    this.state.pageNumber = nextProps.pageNumber
     if(nextProps.msg.type===1 && nextProps.msg.content ==='post question') {
       this.props.getQuestions({ pageNum: this.state.pageNumber, pdfName: this.state.pdfName });
     }
@@ -70,10 +68,9 @@ class PDFViewer extends Component {
       if (this.state.pageNumber >= this.state.numPages) return;
       text = this.state.pageNumber + 1;
     }
-    this.props.onCloseQuestion();
     this.props.getQuestions({ pageNum: text, pdfName: this.state.pdfName });
+    this.props.changePdf(this.state.pdfName, text)
     this.setState({
-      pageNumber: text,
       pages: this.calPageList(text, this.state.numPages)
     });
   };
@@ -103,12 +100,12 @@ class PDFViewer extends Component {
   };
 
   render() {
-    const { pageNumber, numPages, width, points } = this.state;
-    const { classes } = this.props;
+    const { pageNumber, numPages, width, questions } = this.state;
+    const { classes, activeQuestion} = this.props;
     return (
       <div>
         <Document
-          file={"./"+this.state.pdfName}
+          file={this.state.pdfName}
           onLoadSuccess={this.onDocumentLoadSuccess}
         >
           <Page
@@ -132,13 +129,13 @@ class PDFViewer extends Component {
           }}
           id="mask"
         >
-          {points.map((point, index) => {
+          {questions.map((question, index) => {
             return (
               <QPoint
-                questionData={point}
-                opacity={point.opactiy}
+                question={question}
+                opacity={(activeQuestion && activeQuestion.id === question.id)? 0.8:0.4}
                 onUpdateQuestion={e => {
-                  this.props.onUpdateQuestion(point);
+                  this.props.onUpdateQuestion(question);
                 }}
               />
             );
@@ -149,13 +146,15 @@ class PDFViewer extends Component {
           close={this.onCloseQuestionDialog}
           pageNumber={this.state.pageNumber}
           pdfName={this.state.pdfName}
-          onAddPoint={this.onAddPoint}
           posX={this.posX}
           posY={this.posY}
         />
         <div style={{ textAlign: "center" }}>
           <Pagination
-            onClick={this.onChangePage}
+            onClick={(text) => {
+              this.props.changeActiveQuestion(null)
+              this.onChangePage(text)}
+            }
             pages={this.state.pages}
             color="info"
           />
@@ -168,16 +167,19 @@ class PDFViewer extends Component {
 function mapStateToProps(state) {
   return {
     userInfo: state.globalState.userInfo,
-    points: state.front.questions,
+    questions: state.front.questions,
     isAddingQuestion: state.front.isAddingQuestion,
     pdfName: state.front.pdfName,
-    msg: state.globalState.msg
+    msg: state.globalState.msg,
+    pageNumber: state.front.pageNumber,
+    activeQuestion: state.front.activeQuestion
   };
 }
 function mapDispatchToProps(dispatch) {
   return {
-    getQuestions: bindActionCreators(frontActions.get_questions, dispatch)
-    //register: bindActionCreators(IndexActions.get_register, dispatch)
+    getQuestions: bindActionCreators(frontActions.get_questions, dispatch),
+    changePdf: bindActionCreators(frontActions.change_pdf, dispatch),
+    changeActiveQuestion: bindActionCreators(frontActions.change_active_question, dispatch),
   };
 }
 export default connect(

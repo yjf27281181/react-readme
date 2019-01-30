@@ -13,7 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 import ShareIcon from "@material-ui/icons/Share";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
+import ClosetIcon from "@material-ui/icons/Close";
 
 import questionStyle from "assets/jss/components/question/questionStyle";
 import Comment from "view/Comment";
@@ -27,6 +27,11 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { actions as frontActions } from "reducers/frontReducer";
 
+import colorUtil from "tool/colorUtil";
+import Pagination from "components/pagination/Pagination.jsx";
+
+import changeFormat from "tool/dateFormat"
+
 class Question extends Component {
   constructor(props) {
     super(props);
@@ -34,8 +39,10 @@ class Question extends Component {
       expanded: false,
       comments: [],
       content: "",
-      userInfo: null,
+      userInfo: {},
+      commentPage: 1
     };
+    this.onChangePage = this.onChangePage.bind(this)
   }
 
   handleExpandClick = () => {
@@ -47,46 +54,67 @@ class Question extends Component {
   };
 
   handleSendComment = () => {
+    if (!this.state.userInfo.username) {
+      alert("please login first");
+      return;
+    }
     this.props.postComment({
       content: this.state.content,
-      questionId: this.props.point.id,
+      questionId: this.props.question.id,
       authorId: this.state.userInfo.userId
     });
-    this.setState({content:""})
+    this.setState({ content: "" });
   };
 
   componentWillReceiveProps(nextProps) {
-    this.setState({ 
+    this.setState({
       comments: nextProps.comments,
-      userInfo: nextProps.userInfo
+      userInfo: nextProps.userInfo,
+      commentPage: 1,
+      expanded: false
     });
+  }
+
+  onChangePage(text) {
+    const {commentPage, comments} = this.state;
+    if(text ==='PREV'&& commentPage>1) {
+      this.setState({commentPage: commentPage-1})
+    }
+
+    if(text ==='NEXT'&& commentPage*5<comments.length) {
+      this.setState({commentPage: commentPage+1})
+    }
 
   }
 
   render() {
-    if (!this.props.isShowQuestion) {
-      return null;
-    }
-    const { point } = this.props;
+    const { question } = this.props;
     const { classes } = this.props;
+    const {commentPage} = this.state;
     return (
-      <Card className={classes.card} style={{ top: point.pos_y }}>
+      <Card className={classes.card} style={{ top: question.pos_y }}>
         <CardHeader
           avatar={
-            <Avatar aria-label="Recipe" className={classes.avatar}>
-              颜
+            <Avatar
+              aria-label="Recipe"
+              className={classes.avatar}
+              style={{ backgroundColor: colorUtil(question.username) }}
+            >
+              {question.username.substring(0, 3)}
             </Avatar>
           }
           action={
-            <IconButton>
-              <MoreVertIcon />
+            <IconButton onClick={() =>{this.props.changeActiveQuestion(null)}}>
+              <ClosetIcon />
             </IconButton>
           }
-          title={point.title}
-          subheader={point.create_time}
+          title={question.title}
+          subheader={
+            question.username + " - " + changeFormat(question.create_time.substring(0, 10))
+          }
         />
         <CardContent>
-          <Typography component="p">{point.content}</Typography>
+          <Typography component="p">{question.content}</Typography>
         </CardContent>
         <CardActions className={classes.actions} disableActionSpacing>
           <IconButton aria-label="Add to favorites">
@@ -107,18 +135,23 @@ class Question extends Component {
           </IconButton>
         </CardActions>
         <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
-        {
-          this.state.comments.map((data, index)=> {
-            return <Comment data={data} key={index} index={index} />
-          })
-        }
-        <Divider/>
-          
+          {this.state.comments.slice((commentPage-1)*5, commentPage*5).map((data, index) => {
+            return <Comment data={data} key={index} index={index} />;
+          })}
+
+          <div style={{ textAlign: "center" }}>
+            <Pagination
+              onClick={this.onChangePage}
+              pages={[{text: 'PREV'},{active: true ,text: commentPage},{text: 'NEXT'}]}
+              color="primary"
+            />
+          </div>
+          <Divider />
 
           <TextField
             style={{ marginBottom: 0, marginTop: 20 }}
             id="standard-multiline-static"
-            label="reply: "
+            label="&nbsp;&nbsp;&nbsp; Reply: "
             multiline
             rows="4"
             defaultValue="Default Value"
@@ -145,8 +178,8 @@ function mapStateToProps(state) {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    postComment: bindActionCreators(frontActions.post_comment, dispatch)
-    //register: bindActionCreators(IndexActions.get_register, dispatch)
+    postComment: bindActionCreators(frontActions.post_comment, dispatch),
+    changeActiveQuestion: bindActionCreators(frontActions.change_active_question, dispatch),
   };
 }
 export default connect(
