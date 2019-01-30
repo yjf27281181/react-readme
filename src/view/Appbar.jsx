@@ -34,17 +34,16 @@ class AppBar extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.pdfData.courseName === "INF553") {
+    if (nextProps.pdfData["INF553"]) {
       this.setState({
         userInfo: nextProps.userInfo,
-        inf553pdfs: nextProps.pdfData.pdfNames
+        inf553pdfs: nextProps.pdfData["INF553"]
       });
     }
-
-    if (nextProps.pdfData.courseName === "CSCI570") {
+    if (nextProps.pdfData["CSCI570"]) {
       this.setState({
         userInfo: nextProps.userInfo,
-        csci570pdfs: nextProps.pdfData.pdfNames
+        csci570pdfs: nextProps.pdfData["CSCI570"]
       });
     }
 
@@ -95,14 +94,23 @@ class AppBar extends React.Component {
                 />
               </ListItem>
               <ListItem className={classes.listItem}>
-                <Button
-                  href="#pablo"
-                  className={classes.navLink}
-                  onClick={e => e.preventDefault()}
-                  color="transparent"
-                >
-                  CSCI570
-                </Button>
+              <CustomDropdown
+                  left
+                  caret={false}
+                  hoverColor="black"
+                  dropdownHeader="CSCI 570"
+                  buttonText={"CSCI 570"}
+                  buttonProps={{
+                    className: classes.navLink,
+                    color: "transparent"
+                  }}
+                  onClick={(name) => {
+                    this.props.changePdf(name,1)
+                    this.props.changeActiveQuestion(null)
+                  }
+                }
+                  dropdownList={this.state.csci570pdfs}
+                />
               </ListItem>
               <ListItem className={classes.listItem}>
                 <Button

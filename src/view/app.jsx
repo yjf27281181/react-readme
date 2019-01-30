@@ -65,13 +65,13 @@ class App extends Component {
     }
 
     if (
-      nextProps.msg.type === 0 &&
-      nextProps.msg.content === "register failed"
+      nextProps.msg.type === 1 &&
+      nextProps.msg.content === "register success"
     ) {
       this.setState({
-        msgContent: "username has been used",
+        msgContent: "register success, please login",
         isOpenSnackBar: true,
-        msgType: "error"
+        msgType: "success"
       });
     }
 

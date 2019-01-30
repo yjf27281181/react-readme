@@ -104,15 +104,10 @@ export function reducer(state = initialState, action) {
         isAddingQuestion: action.isAddingQuestion
       };
     case actionTypes.RESPONSE_PDF_NAMES:
+      state.pdfData[action.pdf.courseName] = action.pdf.pdfNames;
       return {
         ...state,
-        pdfData: action.pdfData
-      };
-
-    case actionTypes.RESPONSE_PDF_NAMES:
-      return {
-        ...state,
-        pdfData: action.pdfData
+        pdfData: state.pdfData
       };
     case actionTypes.CHANGE_PDF:
       return {

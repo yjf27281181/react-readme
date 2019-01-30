@@ -1,7 +1,7 @@
 import axios from "axios";
 import myconfig from "../conf";
 
-let config = {
+const config = {
   baseURL: myconfig.serverURL,
   //baseURL: "http://34.229.101.241:3333/api",
   transformRequest: [
@@ -39,7 +39,6 @@ axios.interceptors.response.use(function(res) {
 axios.defaults.headers.authorization = localStorage.getItem("jwttoken");
 
 export function get(url) {
-  //console.log(axios.get(url, config));
   return axios.get(url, config);
 }
 

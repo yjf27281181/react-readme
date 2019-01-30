@@ -30,7 +30,6 @@ export function* loginFlow() {
     while (true) {
         let request = yield take(IndexActionTypes.USER_LOGIN);
         let response = yield call(login, request.username, request.password);
-        console.log(response)
         if(response&&response.code === 0){
             yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'login success',msgType:1});
             localStorage.setItem("jwttoken",response.data.token);
@@ -43,7 +42,6 @@ export function* registerFlow () {
     while(true){
         let request = yield take(IndexActionTypes.USER_REGISTER);
         let response = yield call(register, request.data);
-        console.log(response)
         if(response&&response.code === 0){
             yield put({type:IndexActionTypes.SET_MESSAGE,msgContent:'register success',msgType:1});
             yield put({type:IndexActionTypes.RESPONSE_USER_INFO,data:response.data})
@@ -59,7 +57,6 @@ export function* user_auth () {
         try {
             yield put({type:IndexActionTypes.FETCH_START});
             let response = yield call(get,'/user/userInfo');
-            console.log(response)
             if(response && response.code === 0){
                 yield put({type:IndexActionTypes.RESPONSE_USER_INFO,data:response.data})
             }
