@@ -1,68 +1,57 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+URL: www.course-reader.com
 
-## Available Scripts
+开发环境： reactjs + material UI + VS code + Express + nginx + AWS ec2 + mysql
 
-In the project directory, you can run:
+#Course Reader 使用说明
 
-### `npm start`
+这个小网站的主要功能是让在深夜中孤独地读着reading material的你不再孤单，你能在阅读材料旁做下备注，解决他人的问题或者提出问题，阅读更加有效率。
 
-Runs the app in the development mode.<br>
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+##功能说明
 
-The page will reload if you make edits.<br>
-You will also see any lint errors in the console.
+###注册
 
-### `npm test`
+为了让大家知道谁是谁，希望大家使用真名，当然，你也可以成为歌谭市的蝙蝠侠，在黑暗之中用自己的键盘为同学解决问题。
+![register](img/register.PNG)
 
-Launches the test runner in the interactive watch mode.<br>
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+###登录
 
-### `npm run build`
+注册完成之后，就能用刚刚的用户名与密码登录了，密码采用了md5进行了加密
 
-Builds the app for production to the `build` folder.<br>
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![login](img/login.PNG)
 
-The build is minified and the filenames include the hashes.<br>
-Your app is ready to be deployed!
+登录之后点击右上角的头像图标查看自己当前的用户名或者登出
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+![username](img/username.PNG)
 
-### `npm run eject`
+###提问
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+进入主界面，即可开始阅读课后材料，遇到不懂的地方，点击右边图标![write](img/write.PNG),图标高亮时代表可以提问，任意点击pdf上的某个地方，即可提出问题：
+![question](img/question.PNG)
+填写好标题和描述之后，点击提交，即可提交问题，这时，你点击的地方会多出一个浅色的小问号：
+![questionmark](img/questionmark.PNG)
+每一个小问号代表有人提出了一个小问题等待回答，如果你知道答案，即可回复进行评论：
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+###查看问题及回复
 
-Instead, it will copy all the configuration files and the transitive dependencies (Webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+点击任何一个小问号，小问号便会高亮，同时在右侧显示问题：
+![clickqmark](img/clickqmark.PNG)
+当然，你还可以观看其他问题以及同学对此的回复：
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+![reply](img/reply.PNG)
 
-## Learn More
+###底部栏
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+底部分为上下两个部分，上为当前page中的问题，下为最新提出的5个问题：
+![up](img/up.PNG)
+![down](img/down.PNG)
+点击view按钮，可以快速定位到该问题
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+###顶部导航栏
 
-### Code Splitting
+导航栏主要是用来切换不同的pdf，目前只支持INF551于CSCI570两门课：
+![guide](img/guide.PNG)
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
+##结束语
+如果遇到bug可以及时联系我，微信： yjf27281181，或者直接在github里提交bug，项目前端源码已经在上面了，大部分UI界面都是material UI的组件，但是感觉文档和使用感上不如NGZORRO，但是比NGZORRO好看。如果喜欢本项目麻烦star+fork支持一下！
 
-### Analyzing the Bundle Size
 
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `npm run build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
